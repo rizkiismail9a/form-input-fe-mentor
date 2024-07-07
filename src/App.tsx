@@ -5,12 +5,21 @@ import { InputText } from "./components/InputText";
 import { TextArea } from "./components/TextArea";
 import { CheckBox } from "./components/CheckBox";
 
+type FormValues = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  message?: string;
+  query?: string;
+};
+
 const ContactForm = () => {
-  const [typedFirstName, setTypedFirstName] = useState<string>();
-  const [typedLastName, setTypedLastName] = useState<string>();
-  const [typedEmail, setTypedEmail] = useState<string>();
-  const [typedMessage, setTypedMessage] = useState<string>();
-  const [query, setQuery] = useState<string>();
+  // const [typedFirstName, setTypedFirstName] = useState<string>();
+  // const [typedLastName, setTypedLastName] = useState<string>();
+  // const [typedEmail, setTypedEmail] = useState<string>();
+  // const [typedMessage, setTypedMessage] = useState<string>();
+  // const [query, setQuery] = useState<string>();
+  const [formValues, setFormValues] = useState<FormValues>();
   const [agreement, setAgreement] = useState<boolean>(false);
 
   const queryOptions: InputRadio[] = [
@@ -29,19 +38,23 @@ const ContactForm = () => {
   const selectQueryType = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    setQuery(event.target.value);
+    setFormValues({ ...formValues, query: event.target.value });
   };
 
   const getFirstName = (value: string) => {
-    setTypedFirstName(value.trim());
+    setFormValues({ ...formValues, firstName: value.trim() });
   };
 
   const getLastName = (value: string) => {
-    setTypedLastName(value.trim());
+    setFormValues({ ...formValues, lastName: value.trim() });
+  };
+
+  const getEmail = (value: string) => {
+    setFormValues({ ...formValues, email: value.trim() });
   };
 
   const getTextAreaValue = (value: string) => {
-    setTypedMessage(value.trim());
+    setFormValues({ ...formValues, message: value.trim() });
   };
 
   const getAgreement = (value: boolean) => {
@@ -51,11 +64,11 @@ const ContactForm = () => {
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("First Name:", typedFirstName);
-    console.log("Last Name:", typedLastName);
-    console.log("Email:", typedEmail);
-    console.log("Query:", query);
-    console.log("Message:", typedMessage);
+    console.log("First Name:", formValues?.firstName);
+    console.log("Last Name:", formValues?.lastName);
+    console.log("Email:", formValues?.email);
+    console.log("Query:", formValues?.query);
+    console.log("Message:", formValues?.message);
   };
 
   return (
@@ -78,7 +91,7 @@ const ContactForm = () => {
           <InputText
             inputType="email"
             label="Email Address"
-            onUpdateValue={setTypedEmail}
+            onUpdateValue={getEmail}
           />
         </div>
         <div className="query-input">
@@ -92,7 +105,7 @@ const ContactForm = () => {
                 name={item.name}
                 label={item.label}
                 value={item.value}
-                chacked={query === item.value}
+                chacked={formValues?.query === item.value}
                 onChange={selectQueryType}
               />
             ))}
