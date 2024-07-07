@@ -11,10 +11,7 @@ export const CheckBox = ({ label, value, onUpdateValue }: CheckBoxProps) => {
   const [agreement, setAgreement] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreement(event.target.checked); // True
-    console.log(event.target.checked); // True
-    console.log("agg", agreement); // False
-
+    setAgreement(event.target.checked);
     onUpdateValue(event.target.checked);
   };
 

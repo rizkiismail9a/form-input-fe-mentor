@@ -33,20 +33,18 @@ const ContactForm = () => {
   };
 
   const getFirstName = (value: string) => {
-    setTypedFirstName(value);
+    setTypedFirstName(value.trim());
   };
 
   const getLastName = (value: string) => {
-    setTypedLastName(value);
+    setTypedLastName(value.trim());
   };
 
   const getTextAreaValue = (value: string) => {
-    setTypedMessage(value);
+    setTypedMessage(value.trim());
   };
 
   const getAgreement = (value: boolean) => {
-    console.log(value);
-
     setAgreement(value);
   };
 
@@ -107,7 +105,7 @@ const ContactForm = () => {
           onUpdateValue={getAgreement}
         />
         <button
-          disabled={agreement}
+          disabled={!agreement}
           className={`submit-button ${!agreement ? "disabled" : ""}`}
         >
           Submit
