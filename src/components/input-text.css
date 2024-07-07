@@ -8,6 +8,11 @@
   overflow: auto;
 }
 
+.input-text:hover {
+  border: 1px solid var(--green-medium);
+  cursor: pointer;
+}
+
 .input-text:focus-within {
   border: 1px solid var(--green-medium); /* Atur border yang diinginkan saat fokus */
 }

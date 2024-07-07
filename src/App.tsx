@@ -10,7 +10,7 @@ const ContactForm = () => {
   const [typedLastName, setTypedLastName] = useState<string>();
   const [typedEmail, setTypedEmail] = useState<string>();
   const [typedMessage, setTypedMessage] = useState<string>();
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>();
   const [agreement, setAgreement] = useState<boolean>(false);
 
   const queryOptions: InputRadio[] = [

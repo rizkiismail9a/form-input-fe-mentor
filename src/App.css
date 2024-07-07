@@ -60,8 +60,12 @@ form {
   cursor: pointer;
 }
 
+.submit-button:hover {
+  background-color: var(--grey-darker);
+}
+
 .disabled {
-  background-color: var(--grey-medium);
+  background-color: var(--grey-medium) !important;
   cursor: not-allowed;
 }
 
