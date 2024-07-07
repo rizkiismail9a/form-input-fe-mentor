@@ -1,0 +1,41 @@
+.input-text {
+  border: 1px solid var(--grey-darker);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: auto;
+}
+
+.input-text:focus-within {
+  border: 1px solid var(--green-medium); /* Atur border yang diinginkan saat fokus */
+}
+
+input {
+  border: none;
+  width: 100%;
+  overflow: hidden;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+}
+
+label {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label-text {
+  color: var(--grey-darker);
+  display: flex;
+  gap: 4px;
+}
+
+.asteric {
+  color: var(--green-medium);
+}

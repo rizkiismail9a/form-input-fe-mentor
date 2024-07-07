@@ -1,0 +1,17 @@
+textarea:focus {
+  outline: none;
+}
+
+.text-area-warpper textarea {
+  border: 1px solid var(--green-medium);
+  border-radius: 8px;
+  resize: none;
+  padding: 16px;
+  height: 200px;
+}
+
+@media screen and (min-width: 375px) {
+  .text-area-warpper textarea {
+    height: 80px;
+  }
+}

@@ -1,0 +1,90 @@
+#card {
+  margin: auto;
+  background-color: white;
+  max-width: 600px;
+  width: 100%;
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  gap: 24px;
+  flex-direction: column;
+}
+
+.header {
+  font-weight: 700;
+  color: var(--grey-darker);
+  font-size: 24px;
+}
+
+form .name {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.query-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.query-title {
+  color: var(--grey-darker);
+  font-size: 14px;
+}
+
+.query-type {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.asteric {
+  color: var(--green-medium);
+}
+
+.submit-button {
+  width: 100%;
+  background-color: var(--green-medium);
+  border: none;
+  padding: 14px;
+  color: var(--green-lighter);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: var(--grey-medium);
+  cursor: not-allowed;
+}
+
+/* Desktop */
+@media screen and (min-width: 375px) {
+  #card {
+    padding: 20px;
+  }
+
+  form .name {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .query-type {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    width: 100%;
+  }
+
+  .query-type div {
+    flex: 1;
+  }
+}
