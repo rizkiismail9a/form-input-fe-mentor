@@ -48,6 +48,7 @@ const ContactForm = () => {
   const selectQueryType = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
+    setError({ ...error, query: false });
     setFormValues({ ...formValues, query: event.target.value });
   };
 
@@ -100,6 +101,7 @@ const ContactForm = () => {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(formValues);
 
     const isError = validateForm();
 
@@ -150,8 +152,15 @@ const ContactForm = () => {
               />
             ))}
           </div>
+          {error.query && (
+            <div className="query-err-message">Please select a query type</div>
+          )}
         </div>
-        <TextArea label="Message" onUpdateValue={getTextAreaValue} />
+        <TextArea
+          label="Message"
+          isInvalid={error.message}
+          onUpdateValue={getTextAreaValue}
+        />
         <CheckBox
           label="I consent to being contacted by the team"
           value="agree"

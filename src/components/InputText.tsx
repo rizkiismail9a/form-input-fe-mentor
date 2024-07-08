@@ -14,34 +14,36 @@ export const InputText = ({
   isInvalid,
   onUpdateValue,
 }: Props) => {
-  const [validate, setValidate] = useState<boolean>(false);
+  const [inValidateText, setInValidateText] = useState<boolean>(false);
 
   // Update the value of the input text
   const updateValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     onUpdateValue(value);
-    setValidate(false); // Reset validation state on user input
+    setInValidateText(!value.length); // Reset validation state on user input
   };
 
-  useEffect(() => setValidate(isInvalid), [isInvalid]);
+  useEffect(() => setInValidateText(isInvalid), [isInvalid]);
 
   return (
     <label htmlFor={`input-${label.trim().replace(" ", "")}`}>
+      <div>{inValidateText.toString()}</div>
+      <div>{isInvalid.toString()}</div>
       <div className="label-text">
         {label}
         <span className="asteric">*</span>
       </div>
-      <div className={`input-text ${validate ? "invalid" : ""}`}>
+      <div className={`input-text ${inValidateText ? "invalid" : ""}`}>
         <input
           id={`input-${label.trim().replace(" ", "")}`}
           type="text"
           onChange={updateValue}
         />
       </div>
-      {validate && inputType === "text" && (
+      {inValidateText && inputType === "text" && (
         <div className="validator-message">This field is required</div>
       )}
-      {validate && inputType === "email" && (
+      {inValidateText && inputType === "email" && (
         <div className="validator-message">
           Please enter a valid email address
         </div>
