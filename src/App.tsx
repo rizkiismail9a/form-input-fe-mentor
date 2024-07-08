@@ -13,14 +13,24 @@ type FormValues = {
   query?: string;
 };
 
+export type ErrorValidator = {
+  firstName: boolean;
+  lastName: boolean;
+  email: boolean;
+  message: boolean;
+  query: boolean;
+};
+
 const ContactForm = () => {
-  // const [typedFirstName, setTypedFirstName] = useState<string>();
-  // const [typedLastName, setTypedLastName] = useState<string>();
-  // const [typedEmail, setTypedEmail] = useState<string>();
-  // const [typedMessage, setTypedMessage] = useState<string>();
-  // const [query, setQuery] = useState<string>();
   const [formValues, setFormValues] = useState<FormValues>();
   const [agreement, setAgreement] = useState<boolean>(false);
+  const [error, setError] = useState<ErrorValidator>({
+    firstName: false,
+    lastName: false,
+    email: false,
+    message: false,
+    query: false,
+  });
 
   const queryOptions: InputRadio[] = [
     {
@@ -61,14 +71,41 @@ const ContactForm = () => {
     setAgreement(value);
   };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const logValues = () => {
     console.log("First Name:", formValues?.firstName);
     console.log("Last Name:", formValues?.lastName);
     console.log("Email:", formValues?.email);
     console.log("Query:", formValues?.query);
     console.log("Message:", formValues?.message);
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const regexPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regexPattern.test(email);
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: ErrorValidator = {
+      firstName: !formValues?.firstName?.trim(),
+      lastName: !formValues?.lastName?.trim(),
+      email: !formValues?.email?.trim() || !validateEmail(formValues.email),
+      query: !formValues?.query?.trim(),
+      message: !formValues?.message?.trim(),
+    };
+
+    setError(newErrors);
+
+    return Object.values(newErrors).some((error) => error);
+  };
+
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const isError = validateForm();
+
+    if (!isError) {
+      logValues();
+    }
   };
 
   return (
@@ -80,11 +117,13 @@ const ContactForm = () => {
             inputType="text"
             label="First Name"
             onUpdateValue={getFirstName}
+            isInvalid={error.firstName}
           />
           <InputText
             inputType="text"
             label="Last Name"
             onUpdateValue={getLastName}
+            isInvalid={error.lastName}
           />
         </div>
         <div className="email">
@@ -92,6 +131,7 @@ const ContactForm = () => {
             inputType="email"
             label="Email Address"
             onUpdateValue={getEmail}
+            isInvalid={error.email}
           />
         </div>
         <div className="query-input">

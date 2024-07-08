@@ -30,7 +30,6 @@ export const InputRadio = ({
             checked={chacked}
             onChange={onChange}
             value={value}
-            required
           />
           <span className="custom-radio">
             <span className={chacked ? "checked-span" : ""}></span>

@@ -17,7 +17,6 @@ export const TextArea = ({ label, onUpdateValue }: Props) => {
         name="input-message"
         id="message"
         onChange={handleChange}
-        required
       ></textarea>
     </label>
   );
