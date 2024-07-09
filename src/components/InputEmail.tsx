@@ -1,16 +1,12 @@
-import { RegValidation } from "../types/validationTemplate";
 import { findInputError, isFormInvalid } from "../utils";
 import "./input-text.css";
 import { useFormContext } from "react-hook-form";
 
 type Props = {
   label: string;
-  validation: {
-    required: RegValidation<boolean>;
-  };
 };
 
-export const InputText = ({ label, validation }: Props) => {
+export const InputEmail = ({ label }: Props) => {
   const {
     register,
     formState: { errors },
@@ -29,8 +25,17 @@ export const InputText = ({ label, validation }: Props) => {
       <div className={`input-text ${isInvalid ? "invalid" : ""}`}>
         <input
           id={`input-${label.trim().replace(" ", "")}`}
-          type="text"
-          {...register(label, validation)}
+          type="email"
+          {...register(label, {
+            required: {
+              value: true,
+              message: "This field is requierd",
+            },
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Please enter a valid email address",
+            },
+          })}
         />
       </div>
       {isInvalid && (
