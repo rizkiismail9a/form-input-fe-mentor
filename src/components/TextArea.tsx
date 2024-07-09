@@ -1,24 +1,36 @@
+import { useFormContext } from "react-hook-form";
 import "./text-area.css";
+import { RegValidation } from "../types/validationTemplate";
+import { findInputError, isFormInvalid } from "../utils";
 
 type Props = {
   label: string;
-  onUpdateValue: (value: string) => void;
+  validation: {
+    required: RegValidation<boolean>;
+    maxLength: RegValidation<number>;
+  };
 };
 
-export const TextArea = ({ label, onUpdateValue }: Props) => {
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onUpdateValue(event.target.value);
-  };
+export const TextArea = ({ label, validation }: Props) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const inputError = findInputError(errors, label);
+  const isInvalid = isFormInvalid(inputError);
 
   return (
     <label htmlFor="message" className="text-area-warpper">
       <div>{label}</div>
       <textarea
-        name="input-message"
         id="message"
-        onChange={handleChange}
-        required
+        className={`${!isInvalid ? "" : "invalid"}`}
+        data-section="input-message"
+        {...register(label, validation)}
       ></textarea>
+      {isInvalid && (
+        <div className="validator-message">{inputError.error.message}</div>
+      )}
     </label>
   );
 };

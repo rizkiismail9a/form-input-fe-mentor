@@ -1,117 +1,159 @@
-import { useState } from "react";
 import "./App.css";
 import { InputRadio } from "./components/InputRadio";
 import { InputText } from "./components/InputText";
 import { TextArea } from "./components/TextArea";
 import { CheckBox } from "./components/CheckBox";
+import {
+  Controller,
+  FieldValues,
+  FormProvider,
+  useForm,
+} from "react-hook-form";
+import { InputEmail } from "./components/InputEmail";
+import { RegValidation } from "./types/validationTemplate";
+import { findInputError, isFormInvalid } from "./utils";
+import { ToastMessage } from "./components/ToastMessage";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+
+export type ErrorValidator = {
+  firstName: boolean;
+  lastName: boolean;
+  email: boolean;
+  message: boolean;
+  query: boolean;
+};
 
 const ContactForm = () => {
-  const [typedFirstName, setTypedFirstName] = useState<string>();
-  const [typedLastName, setTypedLastName] = useState<string>();
-  const [typedEmail, setTypedEmail] = useState<string>();
-  const [typedMessage, setTypedMessage] = useState<string>();
-  const [query, setQuery] = useState<string>("");
-  const [agreement, setAgreement] = useState<boolean>(false);
+  const methods = useForm();
 
-  const queryOptions: InputRadio[] = [
+  const { errors } = methods.formState;
+
+  const [success, setSuccess] = useState<boolean>(false);
+  const inputQueryError = findInputError(errors, "query");
+  const inputCheckboxError = findInputError(errors, "checkbox");
+  const isInvalid: boolean =
+    isFormInvalid(inputCheckboxError) || isFormInvalid(inputQueryError);
+
+  const inputTextValidation = {
+    required: {
+      value: true,
+      message: "This field is requierd",
+    } as RegValidation<boolean>,
+  };
+
+  const queryOptions = [
     {
-      name: "query-type",
       label: "General Enquiry",
       value: "general-enquiry",
     },
     {
-      name: "query-type",
       label: "Support Request",
       value: "support-request",
     },
   ];
 
-  const selectQueryType = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setQuery(event.target.value);
+  const textAreaValidation = {
+    required: {
+      value: true,
+      message: "This field is requierd",
+    } as RegValidation<boolean>,
+    maxLength: {
+      value: 30,
+      message: "Max content is 30 characters",
+    },
   };
 
-  const getFirstName = (value: string) => {
-    setTypedFirstName(value.trim());
-  };
+  const submitForm = methods.handleSubmit((data: FieldValues) => {
+    console.log(data);
+    setSuccess(true);
 
-  const getLastName = (value: string) => {
-    setTypedLastName(value.trim());
-  };
-
-  const getTextAreaValue = (value: string) => {
-    setTypedMessage(value.trim());
-  };
-
-  const getAgreement = (value: boolean) => {
-    setAgreement(value);
-  };
-
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    console.log("First Name:", typedFirstName);
-    console.log("Last Name:", typedLastName);
-    console.log("Email:", typedEmail);
-    console.log("Query:", query);
-    console.log("Message:", typedMessage);
-  };
+    methods.reset();
+    setTimeout(() => {
+      setSuccess(false);
+    }, 3000);
+  });
 
   return (
-    <div id="card">
-      <div className="header">Contact Us</div>
-      <form onSubmit={submitForm}>
-        <div className="name">
-          <InputText
-            inputType="text"
-            label="First Name"
-            onUpdateValue={getFirstName}
-          />
-          <InputText
-            inputType="text"
-            label="Last Name"
-            onUpdateValue={getLastName}
-          />
-        </div>
-        <div className="email">
-          <InputText
-            inputType="email"
-            label="Email Address"
-            onUpdateValue={setTypedEmail}
-          />
-        </div>
-        <div className="query-input">
-          <div className="query-title">
-            Query Type <span className="asteric">*</span>
-          </div>
-          <div className="query-type">
-            {queryOptions.map((item) => (
-              <InputRadio
-                key={item.value}
-                name={item.name}
-                label={item.label}
-                value={item.value}
-                chacked={query === item.value}
-                onChange={selectQueryType}
-              />
-            ))}
-          </div>
-        </div>
-        <TextArea label="Message" onUpdateValue={getTextAreaValue} />
-        <CheckBox
-          label="I consent to being contacted by the team"
-          value="agree"
-          onUpdateValue={getAgreement}
-        />
-        <button
-          disabled={!agreement}
-          className={`submit-button ${!agreement ? "disabled" : ""}`}
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+    <>
+      <AnimatePresence>
+        {success && (
+          <ToastMessage message="Thanks for completing the form. We'll be in touch soon!" />
+        )}
+      </AnimatePresence>
+      <div id="card">
+        <div className="header">Contact Us</div>
+        <FormProvider {...methods}>
+          <form onSubmit={(e) => e.preventDefault()} noValidate>
+            <div className="name">
+              <InputText label="First Name" validation={inputTextValidation} />
+              <InputText label="Last Name" validation={inputTextValidation} />
+            </div>
+            <div className="email">
+              <InputEmail label="Email Address" />
+            </div>
+            <div className="query-input">
+              <div className="query-title">
+                Query Type <span className="asteric">*</span>
+              </div>
+              <div className="query-type">
+                <Controller
+                  name="query"
+                  control={methods.control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Please select a query type",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <InputRadio
+                      name={field.name}
+                      options={queryOptions}
+                      onChange={field.onChange}
+                    />
+                  )}
+                ></Controller>
+              </div>
+              {isInvalid && (
+                <div className="query-err-message">
+                  {inputQueryError.error?.message}
+                </div>
+              )}
+            </div>
+            <TextArea label="Message" validation={textAreaValidation} />
+            <Controller
+              name="checkbox"
+              control={methods.control}
+              rules={{
+                required: {
+                  value: true,
+                  message:
+                    "To submit this form, please consent to being contacted",
+                },
+              }}
+              render={({ field }) => (
+                <CheckBox
+                  name={field.name}
+                  label="I consent to being contacted by the team"
+                  value="agree"
+                  onUpdateValue={field.onChange}
+                />
+              )}
+            ></Controller>
+            {isInvalid && (
+              <div className="check-err-message">
+                {inputCheckboxError.error?.message}
+              </div>
+            )}
+
+            <button onClick={submitForm} className="submit-button">
+              Submit
+            </button>
+          </form>
+        </FormProvider>
+      </div>
+    </>
   );
 };
 

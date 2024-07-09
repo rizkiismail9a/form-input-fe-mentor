@@ -60,9 +60,19 @@ form {
   cursor: pointer;
 }
 
+.submit-button:hover {
+  background-color: var(--grey-darker);
+}
+
 .disabled {
-  background-color: var(--grey-medium);
+  background-color: var(--grey-medium) !important;
   cursor: not-allowed;
+}
+
+.query-err-message,
+.check-err-message {
+  color: var(--red-primary) !important;
+  font-size: 12px;
 }
 
 /* Desktop */

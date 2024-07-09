@@ -10,6 +10,10 @@ textarea:focus {
   height: 200px;
 }
 
+.invalid {
+  border: 1px solid var(--red-primary) !important;
+}
+
 @media screen and (min-width: 375px) {
   .text-area-warpper textarea {
     height: 80px;
