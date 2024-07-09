@@ -1,3 +1,10 @@
+.radio-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+}
+
 .radio-wrapper {
   border: 1px solid var(--grey-darker);
   padding: 16px 24px;

@@ -4,17 +4,15 @@ import { InputRadio } from "./components/InputRadio";
 import { InputText } from "./components/InputText";
 import { TextArea } from "./components/TextArea";
 import { CheckBox } from "./components/CheckBox";
-import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  FormProvider,
+  useForm,
+} from "react-hook-form";
 import { InputEmail } from "./components/InputEmail";
 import { RegValidation } from "./types/validationTemplate";
-
-type FormValues = {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  message?: string;
-  query?: string;
-};
+import { findInputError, isFormInvalid } from "./utils";
 
 export type ErrorValidator = {
   firstName: boolean;
@@ -26,15 +24,13 @@ export type ErrorValidator = {
 
 const ContactForm = () => {
   const methods = useForm();
-  const [formValues, setFormValues] = useState<FormValues>();
+
+  const { errors } = methods.formState;
+
   const [agreement, setAgreement] = useState<boolean>(false);
-  const [error, setError] = useState<ErrorValidator>({
-    firstName: false,
-    lastName: false,
-    email: false,
-    message: false,
-    query: false,
-  });
+
+  const inputError = findInputError(errors, "query");
+  const isInvalid = isFormInvalid(inputError);
 
   const inputTextValidation = {
     required: {
@@ -43,14 +39,12 @@ const ContactForm = () => {
     } as RegValidation<boolean>,
   };
 
-  const queryOptions: InputRadio[] = [
+  const queryOptions = [
     {
-      name: "query-type",
       label: "General Enquiry",
       value: "general-enquiry",
     },
     {
-      name: "query-type",
       label: "Support Request",
       value: "support-request",
     },
@@ -65,13 +59,6 @@ const ContactForm = () => {
       value: 30,
       message: "Max content is 30 characters",
     },
-  };
-
-  const selectQueryType = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setError({ ...error, query: false });
-    setFormValues({ ...formValues, query: event.target.value });
   };
 
   const getAgreement = (value: boolean) => {
@@ -99,20 +86,27 @@ const ContactForm = () => {
               Query Type <span className="asteric">*</span>
             </div>
             <div className="query-type">
-              {queryOptions.map((item) => (
-                <InputRadio
-                  key={item.value}
-                  name={item.name}
-                  label={item.label}
-                  value={item.value}
-                  chacked={formValues?.query === item.value}
-                  onChange={selectQueryType}
-                />
-              ))}
+              <Controller
+                name="query"
+                control={methods.control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please select a query type",
+                  },
+                }}
+                render={({ field }) => (
+                  <InputRadio
+                    name={field.name}
+                    options={queryOptions}
+                    onChange={field.onChange}
+                  />
+                )}
+              ></Controller>
             </div>
-            {error.query && (
+            {isInvalid && (
               <div className="query-err-message">
-                Please select a query type
+                {inputError.error.message}
               </div>
             )}
           </div>
