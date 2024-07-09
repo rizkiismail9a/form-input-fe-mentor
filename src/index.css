@@ -16,7 +16,7 @@
 }
 
 body {
-  background-color: var(--grey-medium);
+  background-color: var(--green-lighter);
   padding: 16px;
   min-height: 100vh;
   overflow-x: hidden;
