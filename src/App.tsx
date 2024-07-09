@@ -68,6 +68,7 @@ const ContactForm = () => {
     console.log(data);
     setSuccess(true);
 
+    methods.reset();
     setTimeout(() => {
       setSuccess(false);
     }, 3000);
