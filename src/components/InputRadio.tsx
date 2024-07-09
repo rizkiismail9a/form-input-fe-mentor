@@ -17,6 +17,10 @@ export const InputRadio = ({ name, options, onChange }: InputRadio) => {
     onChange(event.target.value);
   };
 
+  window.addEventListener("reset-form", () => {
+    setSelectedQuery(undefined);
+  });
+
   return (
     <div className="radio-container">
       {options.map((item) => (
