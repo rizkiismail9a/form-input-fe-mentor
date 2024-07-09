@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cy:run-ct": "cypress run --component",
+    "cy:open-ct": "cypress open --component"
   },
   "dependencies": {
     "framer-motion": "^11.2.14",
@@ -16,14 +18,18 @@
     "react-hook-form": "^7.52.1"
   },
   "devDependencies": {
+    "@cypress/vite-dev-server": "^5.1.1",
+    "@types/mocha": "^10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",
+    "cypress": "13.6.6",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "mocha": "^10.6.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   },
