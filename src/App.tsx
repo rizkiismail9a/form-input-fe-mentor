@@ -26,9 +26,7 @@ export type ErrorValidator = {
 
 const ContactForm = () => {
   const methods = useForm();
-
   const { errors } = methods.formState;
-
   const [success, setSuccess] = useState<boolean>(false);
   const inputQueryError = findInputError(errors, "query");
   const inputCheckboxError = findInputError(errors, "checkbox");
@@ -53,6 +51,8 @@ const ContactForm = () => {
     },
   ];
 
+  const resetEvent = new Event("reset-form");
+
   const textAreaValidation = {
     required: {
       value: true,
@@ -67,8 +67,8 @@ const ContactForm = () => {
   const submitForm = methods.handleSubmit((data: FieldValues) => {
     console.log(data);
     setSuccess(true);
-
     methods.reset();
+    window.dispatchEvent(resetEvent);
     setTimeout(() => {
       setSuccess(false);
     }, 3000);

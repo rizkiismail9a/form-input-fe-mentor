@@ -21,6 +21,10 @@ export const CheckBox = ({
     onUpdateValue(event.target.checked);
   };
 
+  window.addEventListener("reset-form", () => {
+    setAgreement(false);
+  });
+
   return (
     <label
       className="checkbox-label"
