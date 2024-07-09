@@ -26,6 +26,7 @@ export const InputEmail = ({ label }: Props) => {
         <input
           id={`input-${label.trim().replace(" ", "")}`}
           type="email"
+          data-section="input-email"
           {...register(label, {
             required: {
               value: true,

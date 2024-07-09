@@ -31,6 +31,7 @@ export const InputRadio = ({ name, options, onChange }: InputRadio) => {
               .replace(" ", "-")
               .toLocaleLowerCase()}`}
             className="radio-label"
+            data-section="query-type"
           >
             <input
               id={`radio-${item.label.replace(" ", "-").toLocaleLowerCase()}`}

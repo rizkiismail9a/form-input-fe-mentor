@@ -8,4 +8,10 @@ export default defineConfig({
       bundler: "vite",
     },
   },
+
+  e2e: {
+    baseUrl: "http://localhost:9000",
+    specPattern: "cypress/e2e/**/*.cy.spec.ts",
+    supportFile: "cypress/support/e2e.ts",
+  },
 });

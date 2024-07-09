@@ -25,6 +25,7 @@ export const TextArea = ({ label, validation }: Props) => {
       <textarea
         id="message"
         className={`${!isInvalid ? "" : "invalid"}`}
+        data-section="input-message"
         {...register(label, validation)}
       ></textarea>
       {isInvalid && (

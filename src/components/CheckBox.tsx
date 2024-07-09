@@ -25,6 +25,7 @@ export const CheckBox = ({
     <label
       className="checkbox-label"
       aria-label="checkbox label"
+      data-section="input-checkbox"
       htmlFor={`checkbox-${label.toLocaleLowerCase().split(" ").join("-")}`}
     >
       <input

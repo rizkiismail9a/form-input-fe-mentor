@@ -30,6 +30,7 @@ export const InputText = ({ label, validation }: Props) => {
         <input
           id={`input-${label.trim().replace(" ", "")}`}
           type="text"
+          data-section="input-text"
           {...register(label, validation)}
         />
       </div>
