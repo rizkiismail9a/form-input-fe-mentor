@@ -2,12 +2,18 @@ import { useState } from "react";
 import "./check-box.css";
 
 type CheckBoxProps = {
+  name: string;
   label: string;
   value: string;
   onUpdateValue: (agree: boolean) => void;
 };
 
-export const CheckBox = ({ label, value, onUpdateValue }: CheckBoxProps) => {
+export const CheckBox = ({
+  name,
+  label,
+  value,
+  onUpdateValue,
+}: CheckBoxProps) => {
   const [agreement, setAgreement] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +28,7 @@ export const CheckBox = ({ label, value, onUpdateValue }: CheckBoxProps) => {
       htmlFor={`checkbox-${label.toLocaleLowerCase().split(" ").join("-")}`}
     >
       <input
+        name={name}
         type="checkbox"
         value={value}
         id={`checkbox-${label.toLocaleLowerCase().split(" ").join("-")}`}

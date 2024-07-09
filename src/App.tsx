@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import { InputRadio } from "./components/InputRadio";
 import { InputText } from "./components/InputText";
@@ -27,10 +26,10 @@ const ContactForm = () => {
 
   const { errors } = methods.formState;
 
-  const [agreement, setAgreement] = useState<boolean>(false);
-
-  const inputError = findInputError(errors, "query");
-  const isInvalid = isFormInvalid(inputError);
+  const inputQueryError = findInputError(errors, "query");
+  const inputCheckboxError = findInputError(errors, "checkbox");
+  const isInvalid: boolean =
+    isFormInvalid(inputCheckboxError) || isFormInvalid(inputQueryError);
 
   const inputTextValidation = {
     required: {
@@ -59,10 +58,6 @@ const ContactForm = () => {
       value: 30,
       message: "Max content is 30 characters",
     },
-  };
-
-  const getAgreement = (value: boolean) => {
-    setAgreement(value);
   };
 
   const submitForm = methods.handleSubmit((data: FieldValues) => {
@@ -106,21 +101,37 @@ const ContactForm = () => {
             </div>
             {isInvalid && (
               <div className="query-err-message">
-                {inputError.error.message}
+                {inputQueryError.error?.message}
               </div>
             )}
           </div>
           <TextArea label="Message" validation={textAreaValidation} />
-          <CheckBox
-            label="I consent to being contacted by the team"
-            value="agree"
-            onUpdateValue={getAgreement}
-          />
-          <button
-            onClick={submitForm}
-            disabled={!agreement}
-            className={`submit-button ${!agreement ? "disabled" : ""}`}
-          >
+          <Controller
+            name="checkbox"
+            control={methods.control}
+            rules={{
+              required: {
+                value: true,
+                message:
+                  "To submit this form, please consent to being contacted",
+              },
+            }}
+            render={({ field }) => (
+              <CheckBox
+                name={field.name}
+                label="I consent to being contacted by the team"
+                value="agree"
+                onUpdateValue={field.onChange}
+              />
+            )}
+          ></Controller>
+          {isInvalid && (
+            <div className="check-err-message">
+              {inputCheckboxError.error?.message}
+            </div>
+          )}
+
+          <button onClick={submitForm} className="submit-button">
             Submit
           </button>
         </form>

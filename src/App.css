@@ -69,7 +69,8 @@ form {
   cursor: not-allowed;
 }
 
-.query-err-message {
+.query-err-message,
+.check-err-message {
   color: var(--red-primary) !important;
   font-size: 12px;
 }
